@@ -83,7 +83,7 @@ fn deposit_account(account_name: String, account_currency: String, account_balan
 
         *account_balance += deposit_amount;
 
-        println!("Updated Balance: {}", account_balance);
+        println!("Updated Balance: {.2}", account_balance);
         println!();
 
         if return_menu() {
