@@ -43,6 +43,39 @@ fn register_account(account_name: &mut String) {
     }
 }
 
+fn deposit_account(account_name: String, account_balance: &mut f64) {
+    loop {
+        let mut deposit_input = String::new();
+        println!("Deposit Amount");
+        println!("Account Name: {}", account_name);
+        println!("Current Balance: {}", account_balance);
+        println!("Currency: ");
+        println!();
+
+        print!("Deposit Amount: ");
+        io::stdout().flush().unwrap();
+
+        io::stdin()
+            .read_line(&mut deposit_input)
+            .expect("Failed to read input");
+
+        let deposit_amount: f64 = deposit_input
+            .trim()
+            .parse()
+            .expect("Invalid input: Please enter a valid floating-point number.");
+
+        *account_balance += deposit_amount;
+
+        println!("Updated Balance: {}", account_balance);
+        println!();
+
+        if return_menu() {
+            println!();
+            break;
+        }
+    }
+}
+
 fn main() {
     let mut account = BankAccount {
         name: String::new(),
@@ -67,6 +100,9 @@ fn main() {
                     println!("You already have an existing account!");
                     println!();
                 }
+            }
+            "2" => {
+                deposit_account(account.name.clone(), &mut account.balance);
             }
             "7" => break,
             _ => println!("Invalid choice!"),
