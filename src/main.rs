@@ -6,6 +6,7 @@ struct BankAccount {
     currency: String,
 }
 
+/// Displays the main transaction menu to the user.
 fn print_menu() {
     println!("Select Transaction:");
     println!("[1] Register Account Name");
@@ -18,6 +19,11 @@ fn print_menu() {
     println!();
 }
 
+/// Prompts the user to return to the main menu.
+///
+/// # Returns
+/// - `true` if the user inputs 'Y' or 'y'.
+/// - `false` otherwise.
 fn return_menu() -> bool {
     let mut input = String::new();
     print!("Back to the Main Menu (Y/N): ");
@@ -26,6 +32,10 @@ fn return_menu() -> bool {
     matches!(input.trim().to_uppercase().as_str(), "Y")
 }
 
+/// Registers or sets the account name.
+///
+/// # Arguments
+/// * `account_name` - A mutable reference to the account name string.
 fn register_account(account_name: &mut String) {
     loop {
         println!("Register Account Name");
@@ -44,6 +54,12 @@ fn register_account(account_name: &mut String) {
     }
 }
 
+/// Handles depositing money into the account.
+///
+/// # Arguments
+/// * `account_name` - The account holder's name.
+/// * `account_currency` - The currency of the account.
+/// * `account_balance` - Mutable reference to the account balance.
 fn deposit_account(account_name: String, account_currency: String, account_balance: &mut f64) {
     loop {
         let mut deposit_input = String::new();
@@ -77,6 +93,12 @@ fn deposit_account(account_name: String, account_currency: String, account_balan
     }
 }
 
+/// Handles withdrawing money from the account.
+///
+/// # Arguments
+/// * `account_name` - The account holder's name.
+/// * `account_currency` - The currency of the account.
+/// * `account_balance` - Mutable reference to the account balance.
 fn withdraw_amount(account_name: String, account_currency: String, account_balance: &mut f64) {
     loop {
         let mut withdraw_input = String::new();
@@ -118,6 +140,8 @@ fn withdraw_amount(account_name: String, account_currency: String, account_balan
     }
 }
 
+/// Main entry point of the banking application.
+/// Initializes the account and manages the transaction loop.
 fn main() {
     let mut account = BankAccount {
         name: String::new(),
