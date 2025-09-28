@@ -3,6 +3,7 @@ use std::io::{self, Write};
 struct BankAccount {
     name: String,
     balance: f64,
+    currency: String,
 }
 
 fn print_menu() {
@@ -43,14 +44,13 @@ fn register_account(account_name: &mut String) {
     }
 }
 
-fn deposit_account(account_name: String, account_balance: &mut f64) {
+fn deposit_account(account_name: String, account_currency: String, account_balance: &mut f64) {
     loop {
         let mut deposit_input = String::new();
         println!("Deposit Amount");
         println!("Account Name: {}", account_name);
         println!("Current Balance: {}", account_balance);
-        // TODO: add currency
-        println!("Currency: ");
+        println!("Currency: {}", account_currency);
         println!();
 
         print!("Deposit Amount: ");
@@ -81,6 +81,7 @@ fn main() {
     let mut account = BankAccount {
         name: String::new(),
         balance: 0.0,
+        currency: String::from("PHP"),
     };
 
     loop {
@@ -98,15 +99,24 @@ fn main() {
                 if account.name.is_empty() {
                     register_account(&mut account.name);
                 } else {
-                    println!("You already have an existing account!");
+                    println!("[ERROR] You already have an existing account!");
                     println!();
                 }
             }
             "2" => {
-                deposit_account(account.name.clone(), &mut account.balance);
+                if !account.name.is_empty() {
+                    deposit_account(
+                        account.name.clone(),
+                        account.currency.clone(),
+                        &mut account.balance,
+                    );
+                } else {
+                    println!("[ERROR] You dont have an existing account!");
+                    println!();
+                }
             }
             "7" => break,
-            _ => println!("Invalid choice!"),
+            _ => println!("[ERROR] Invalid choice!"),
         }
     }
 }
