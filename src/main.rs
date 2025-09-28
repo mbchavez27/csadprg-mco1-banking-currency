@@ -49,6 +49,7 @@ fn deposit_account(account_name: String, account_balance: &mut f64) {
         println!("Deposit Amount");
         println!("Account Name: {}", account_name);
         println!("Current Balance: {}", account_balance);
+        // TODO: add currency
         println!("Currency: ");
         println!();
 
