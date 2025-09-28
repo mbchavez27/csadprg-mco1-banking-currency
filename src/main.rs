@@ -77,6 +77,47 @@ fn deposit_account(account_name: String, account_currency: String, account_balan
     }
 }
 
+fn withdraw_amount(account_name: String, account_currency: String, account_balance: &mut f64) {
+    loop {
+        let mut withdraw_input = String::new();
+        println!("Withdraw Amount");
+        println!("Account Name: {}", account_name);
+        println!("Current Balance: {:.2}", account_balance);
+        println!("Currency: {}", account_currency);
+        println!();
+
+        print!("Withdraw Amount: ");
+        io::stdout().flush().unwrap();
+
+        io::stdin()
+            .read_line(&mut withdraw_input)
+            .expect("Failed to read input");
+
+        let withdraw_amount: f64 = match withdraw_input.trim().parse() {
+            Ok(val) => val,
+            Err(_) => {
+                println!("Invalid input: Please enter a valid number.\n");
+                continue;
+            }
+        };
+
+        if withdraw_amount > *account_balance {
+            println!("Cannot withdraw more than the current balance.\n");
+            continue;
+        }
+
+        *account_balance -= withdraw_amount;
+
+        println!("Updated Balance: {:.2}", account_balance);
+        println!();
+
+        if return_menu() {
+            println!();
+            break;
+        }
+    }
+}
+
 fn main() {
     let mut account = BankAccount {
         name: String::new(),
@@ -115,8 +156,23 @@ fn main() {
                     println!();
                 }
             }
+            "3" => {
+                if !account.name.is_empty() {
+                    withdraw_amount(
+                        account.name.clone(),
+                        account.currency.clone(),
+                        &mut account.balance,
+                    );
+                } else {
+                    println!("[ERROR] You dont have an existing account!");
+                    println!();
+                }
+            }
             "7" => break,
-            _ => println!("[ERROR] Invalid choice!"),
+            _ => {
+                println!("[ERROR] Invalid choice!");
+                println!();
+            }
         }
     }
 }
