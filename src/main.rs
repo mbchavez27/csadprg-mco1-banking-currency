@@ -194,6 +194,31 @@ fn record_exchange_rate(currencies: &mut IndexMap<String, CurrencyType>) {
     }
 }
 
+fn currency_exchange(currencies: &mut IndexMap<String, CurrencyType>) {
+    loop {
+        println!("Foreign Currency Exchange");
+        println!("Source Currency Option:");
+
+        for (i, (key, value)) in currencies.iter_mut().enumerate() {
+            println!("[{}] {} ({})", i + 1, value.name, key);
+        }
+
+        println!();
+
+        println!("Exchanged Currency Option:");
+
+        for (i, (key, value)) in currencies.iter_mut().enumerate() {
+            println!("[{}] {} ({})", i + 1, value.name, key);
+        }
+
+        println!();
+        if return_menu() {
+            println!();
+            break;
+        }
+    }
+}
+
 /// Main entry point of the banking application.
 /// Initializes the account and manages the transaction loop.
 fn main() {
@@ -296,6 +321,9 @@ fn main() {
                     println!("[ERROR] You dont have an existing account!");
                     println!();
                 }
+            }
+            "4" => {
+                currency_exchange(&mut currencies);
             }
             "5" => {
                 record_exchange_rate(&mut currencies);
