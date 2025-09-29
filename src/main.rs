@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::io::{self, Write};
 
 struct CurrencyType {
@@ -6,10 +7,10 @@ struct CurrencyType {
     exchange_rate: f64,
 }
 
-struct BankAccount {
+struct BankAccount<'a> {
     name: String,
     balance: f64,
-    currency: CurrencyType,
+    currency: Option<&'a mut CurrencyType>,
 }
 
 /// Displays the main transaction menu to the user.
@@ -68,7 +69,7 @@ fn register_account(account_name: &mut String) {
 /// * `account_balance` - Mutable reference to the account balance.
 fn deposit_account(
     account_name: String,
-    account_currency: &CurrencyType,
+    account_currency: &Option<&mut CurrencyType>,
     account_balance: &mut f64,
 ) {
     loop {
@@ -76,7 +77,13 @@ fn deposit_account(
         println!("Deposit Amount");
         println!("Account Name: {}", account_name);
         println!("Current Balance: {}", account_balance);
-        println!("Currency: {}", account_currency.id);
+        println!(
+            "Currency: {}",
+            account_currency
+                .as_ref()
+                .map(|c| &c.id)
+                .unwrap_or(&"None".to_string())
+        );
         println!();
 
         print!("Deposit Amount: ");
@@ -111,7 +118,7 @@ fn deposit_account(
 /// * `account_balance` - Mutable reference to the account balance.
 fn withdraw_amount(
     account_name: String,
-    account_currency: &CurrencyType,
+    account_currency: &Option<&mut CurrencyType>,
     account_balance: &mut f64,
 ) {
     loop {
@@ -119,7 +126,13 @@ fn withdraw_amount(
         println!("Withdraw Amount");
         println!("Account Name: {}", account_name);
         println!("Current Balance: {:.2}", account_balance);
-        println!("Currency: {}", account_currency.id);
+        println!(
+            "Currency: {}",
+            account_currency
+                .as_ref()
+                .map(|c| &c.id)
+                .unwrap_or(&"None".to_string())
+        );
         println!();
 
         print!("Withdraw Amount: ");
@@ -157,46 +170,61 @@ fn withdraw_amount(
 /// Main entry point of the banking application.
 /// Initializes the account and manages the transaction loop.
 fn main() {
-    let php_currency = CurrencyType {
-        id: String::from("PHP"),
-        name: String::from("Philippine Peso"),
-        exchange_rate: 1.0, // base currency rate
-    };
-
-    let usd_currency = CurrencyType {
-        id: String::from("USD"),
-        name: String::from("United States Dollar"),
-        exchange_rate: 0.0,
-    };
-
-    let jpy_currency = CurrencyType {
-        id: String::from("JPY"),
-        name: String::from("Japanese Yen"),
-        exchange_rate: 0.0,
-    };
-
-    let gbp_currency = CurrencyType {
-        id: String::from("GBP"),
-        name: String::from("British Pound Sterling"),
-        exchange_rate: 0.0,
-    };
-
-    let eur_currency = CurrencyType {
-        id: String::from("EUR"),
-        name: String::from("Euro"),
-        exchange_rate: 0.0,
-    };
-
-    let cny_currency = CurrencyType {
-        id: String::from("CNY"),
-        name: String::from("Chinese Yuan Renminni"),
-        exchange_rate: 0.0,
-    };
+    let mut currencies: HashMap<String, CurrencyType> = HashMap::from([
+        (
+            "PHP".to_string(),
+            CurrencyType {
+                id: "PHP".to_string(),
+                name: "Philippine Peso".to_string(),
+                exchange_rate: 1.0,
+            },
+        ),
+        (
+            "USD".to_string(),
+            CurrencyType {
+                id: "USD".to_string(),
+                name: "United States Dollar".to_string(),
+                exchange_rate: 0.0,
+            },
+        ),
+        (
+            "JPY".to_string(),
+            CurrencyType {
+                id: "JPY".to_string(),
+                name: "Japanese Yen".to_string(),
+                exchange_rate: 0.0,
+            },
+        ),
+        (
+            "GBP".to_string(),
+            CurrencyType {
+                id: "GBP".to_string(),
+                name: "British Pound Sterling".to_string(),
+                exchange_rate: 0.0,
+            },
+        ),
+        (
+            "EUR".to_string(),
+            CurrencyType {
+                id: "EUR".to_string(),
+                name: "Euro".to_string(),
+                exchange_rate: 0.0,
+            },
+        ),
+        (
+            "CNY".to_string(),
+            CurrencyType {
+                id: "CNY".to_string(),
+                name: "Chinese Yuan Renminbi".to_string(),
+                exchange_rate: 0.0,
+            },
+        ),
+    ]);
 
     let mut account = BankAccount {
         name: String::new(),
         balance: 0.0,
-        currency: php_currency,
+        currency: currencies.get_mut("PHP"),
     };
 
     loop {
