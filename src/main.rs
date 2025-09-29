@@ -7,10 +7,10 @@ struct CurrencyType {
     exchange_rate: f64,
 }
 
-struct BankAccount<'a> {
+struct BankAccount {
     name: String,
     balance: f64,
-    currency: Option<&'a mut CurrencyType>,
+    currency_id: String,
 }
 
 /// Displays the main transaction menu to the user.
@@ -67,23 +67,13 @@ fn register_account(account_name: &mut String) {
 /// * `account_name` - The account holder's name.
 /// * `account_currency` - The currency of the account.
 /// * `account_balance` - Mutable reference to the account balance.
-fn deposit_account(
-    account_name: String,
-    account_currency: &Option<&mut CurrencyType>,
-    account_balance: &mut f64,
-) {
+fn deposit_account(account_name: String, currency_id: &str, account_balance: &mut f64) {
     loop {
         let mut deposit_input = String::new();
         println!("Deposit Amount");
         println!("Account Name: {}", account_name);
         println!("Current Balance: {}", account_balance);
-        println!(
-            "Currency: {}",
-            account_currency
-                .as_ref()
-                .map(|c| &c.id)
-                .unwrap_or(&"None".to_string())
-        );
+        println!("Currency: {}", currency_id);
         println!();
 
         print!("Deposit Amount: ");
@@ -116,23 +106,13 @@ fn deposit_account(
 /// * `account_name` - The account holder's name.
 /// * `account_currency` - The currency of the account.
 /// * `account_balance` - Mutable reference to the account balance.
-fn withdraw_amount(
-    account_name: String,
-    account_currency: &Option<&mut CurrencyType>,
-    account_balance: &mut f64,
-) {
+fn withdraw_amount(account_name: String, currency_id: &str, account_balance: &mut f64) {
     loop {
         let mut withdraw_input = String::new();
         println!("Withdraw Amount");
         println!("Account Name: {}", account_name);
         println!("Current Balance: {:.2}", account_balance);
-        println!(
-            "Currency: {}",
-            account_currency
-                .as_ref()
-                .map(|c| &c.id)
-                .unwrap_or(&"None".to_string())
-        );
+        println!("Currency: {}", currency_id);
         println!();
 
         print!("Withdraw Amount: ");
@@ -224,7 +204,7 @@ fn main() {
     let mut account = BankAccount {
         name: String::new(),
         balance: 0.0,
-        currency: currencies.get_mut("PHP"),
+        currency_id: String::from("PHP"),
     };
 
     loop {
@@ -250,7 +230,7 @@ fn main() {
                 if !account.name.is_empty() {
                     deposit_account(
                         account.name.clone(),
-                        &account.currency,
+                        &account.currency_id,
                         &mut account.balance,
                     );
                 } else {
@@ -262,7 +242,7 @@ fn main() {
                 if !account.name.is_empty() {
                     withdraw_amount(
                         account.name.clone(),
-                        &account.currency,
+                        &account.currency_id,
                         &mut account.balance,
                     );
                 } else {
