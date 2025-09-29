@@ -157,10 +157,40 @@ fn withdraw_amount(
 /// Main entry point of the banking application.
 /// Initializes the account and manages the transaction loop.
 fn main() {
-    let mut php_currency = CurrencyType {
+    let php_currency = CurrencyType {
         id: String::from("PHP"),
         name: String::from("Philippine Peso"),
         exchange_rate: 1.0, // base currency rate
+    };
+
+    let usd_currency = CurrencyType {
+        id: String::from("USD"),
+        name: String::from("United States Dollar"),
+        exchange_rate: 0.0,
+    };
+
+    let jpy_currency = CurrencyType {
+        id: String::from("JPY"),
+        name: String::from("Japanese Yen"),
+        exchange_rate: 0.0,
+    };
+
+    let gbp_currency = CurrencyType {
+        id: String::from("GBP"),
+        name: String::from("British Pound Sterling"),
+        exchange_rate: 0.0,
+    };
+
+    let eur_currency = CurrencyType {
+        id: String::from("EUR"),
+        name: String::from("Euro"),
+        exchange_rate: 0.0,
+    };
+
+    let cny_currency = CurrencyType {
+        id: String::from("CNY"),
+        name: String::from("Chinese Yuan Renminni"),
+        exchange_rate: 0.0,
     };
 
     let mut account = BankAccount {
