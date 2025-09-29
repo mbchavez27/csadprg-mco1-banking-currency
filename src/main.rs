@@ -1,9 +1,15 @@
 use std::io::{self, Write};
 
+struct CurrencyType {
+    id: String,
+    name: String,
+    exchange_rate: f64,
+}
+
 struct BankAccount {
     name: String,
     balance: f64,
-    currency: String,
+    currency: CurrencyType,
 }
 
 /// Displays the main transaction menu to the user.
@@ -60,13 +66,17 @@ fn register_account(account_name: &mut String) {
 /// * `account_name` - The account holder's name.
 /// * `account_currency` - The currency of the account.
 /// * `account_balance` - Mutable reference to the account balance.
-fn deposit_account(account_name: String, account_currency: String, account_balance: &mut f64) {
+fn deposit_account(
+    account_name: String,
+    account_currency: &CurrencyType,
+    account_balance: &mut f64,
+) {
     loop {
         let mut deposit_input = String::new();
         println!("Deposit Amount");
         println!("Account Name: {}", account_name);
         println!("Current Balance: {}", account_balance);
-        println!("Currency: {}", account_currency);
+        println!("Currency: {}", account_currency.id);
         println!();
 
         print!("Deposit Amount: ");
@@ -99,13 +109,17 @@ fn deposit_account(account_name: String, account_currency: String, account_balan
 /// * `account_name` - The account holder's name.
 /// * `account_currency` - The currency of the account.
 /// * `account_balance` - Mutable reference to the account balance.
-fn withdraw_amount(account_name: String, account_currency: String, account_balance: &mut f64) {
+fn withdraw_amount(
+    account_name: String,
+    account_currency: &CurrencyType,
+    account_balance: &mut f64,
+) {
     loop {
         let mut withdraw_input = String::new();
         println!("Withdraw Amount");
         println!("Account Name: {}", account_name);
         println!("Current Balance: {:.2}", account_balance);
-        println!("Currency: {}", account_currency);
+        println!("Currency: {}", account_currency.id);
         println!();
 
         print!("Withdraw Amount: ");
@@ -143,10 +157,16 @@ fn withdraw_amount(account_name: String, account_currency: String, account_balan
 /// Main entry point of the banking application.
 /// Initializes the account and manages the transaction loop.
 fn main() {
+    let mut php_currency = CurrencyType {
+        id: String::from("PHP"),
+        name: String::from("Philippine Peso"),
+        exchange_rate: 1.0, // base currency rate
+    };
+
     let mut account = BankAccount {
         name: String::new(),
         balance: 0.0,
-        currency: String::from("PHP"),
+        currency: php_currency,
     };
 
     loop {
@@ -172,7 +192,7 @@ fn main() {
                 if !account.name.is_empty() {
                     deposit_account(
                         account.name.clone(),
-                        account.currency.clone(),
+                        &account.currency,
                         &mut account.balance,
                     );
                 } else {
@@ -184,7 +204,7 @@ fn main() {
                 if !account.name.is_empty() {
                     withdraw_amount(
                         account.name.clone(),
-                        account.currency.clone(),
+                        &account.currency,
                         &mut account.balance,
                     );
                 } else {
