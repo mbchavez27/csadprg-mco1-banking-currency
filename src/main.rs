@@ -1,12 +1,14 @@
 use indexmap::IndexMap;
 use std::io::{self, Write};
 
+/// Represents a type of currency with its ID, name, and exchange rate.
 struct CurrencyType {
     id: String,
     name: String,
     exchange_rate: f64,
 }
 
+/// Represents a bank account with a name, balance, and associated currency ID.
 struct BankAccount {
     name: String,
     balance: f64,
@@ -65,7 +67,7 @@ fn register_account(account_name: &mut String) {
 ///
 /// # Arguments
 /// * `account_name` - The account holder's name.
-/// * `account_currency` - The currency of the account.
+/// * `currency_id` - The ID of the account's currency.
 /// * `account_balance` - Mutable reference to the account balance.
 fn deposit_account(account_name: String, currency_id: &str, account_balance: &mut f64) {
     loop {
@@ -104,7 +106,7 @@ fn deposit_account(account_name: String, currency_id: &str, account_balance: &mu
 ///
 /// # Arguments
 /// * `account_name` - The account holder's name.
-/// * `account_currency` - The currency of the account.
+/// * `currency_id` - The ID of the account's currency.
 /// * `account_balance` - Mutable reference to the account balance.
 fn withdraw_amount(account_name: String, currency_id: &str, account_balance: &mut f64) {
     loop {
@@ -147,6 +149,10 @@ fn withdraw_amount(account_name: String, currency_id: &str, account_balance: &mu
     }
 }
 
+/// Allows the user to record or update exchange rates for currencies.
+///
+/// # Arguments
+/// * `currencies` - A mutable reference to the `IndexMap` of currencies.
 fn record_exchange_rate(currencies: &mut IndexMap<String, CurrencyType>) {
     loop {
         let mut currency_input = String::new();
@@ -194,6 +200,10 @@ fn record_exchange_rate(currencies: &mut IndexMap<String, CurrencyType>) {
     }
 }
 
+/// Placeholder function for currency exchange operation.
+///
+/// # Arguments
+/// * `currencies` - A mutable reference to the `IndexMap` of currencies.
 fn currency_exchange(currencies: &mut IndexMap<String, CurrencyType>) {
     loop {
         println!("Foreign Currency Exchange");
@@ -220,7 +230,7 @@ fn currency_exchange(currencies: &mut IndexMap<String, CurrencyType>) {
 }
 
 /// Main entry point of the banking application.
-/// Initializes the account and manages the transaction loop.
+/// Initializes currencies, the user account, and handles user transactions.
 fn main() {
     let mut currencies: IndexMap<String, CurrencyType> = IndexMap::from([
         (
