@@ -86,7 +86,7 @@ fn deposit_account(account_name: String, currency_id: &str, account_balance: &mu
         let deposit_amount: f64 = deposit_input
             .trim()
             .parse()
-            .expect("Invalid input: Please enter a valid floating-point number.");
+            .expect("[ERROR] Invalid input: Please enter a valid floating-point number.");
 
         *account_balance += deposit_amount;
 
@@ -120,18 +120,18 @@ fn withdraw_amount(account_name: String, currency_id: &str, account_balance: &mu
 
         io::stdin()
             .read_line(&mut withdraw_input)
-            .expect("Failed to read input");
+            .expect("[ERROR] Failed to read input");
 
         let withdraw_amount: f64 = match withdraw_input.trim().parse() {
             Ok(val) => val,
             Err(_) => {
-                println!("Invalid input: Please enter a valid number.\n");
+                println!("[ERROR]Invalid input: Please enter a valid number.\n");
                 continue;
             }
         };
 
         if withdraw_amount > *account_balance {
-            println!("Cannot withdraw more than the current balance.\n");
+            println!("[ERROR] Cannot withdraw more than the current balance.\n");
             continue;
         }
 
@@ -148,14 +148,50 @@ fn withdraw_amount(account_name: String, currency_id: &str, account_balance: &mu
 }
 
 fn record_exchange_rate(currencies: &mut IndexMap<String, CurrencyType>) {
-    println!("Record Exchange Rate");
-    println!();
+    loop {
+        let mut currency_input = String::new();
+        let mut rate_input = String::new();
+        println!("Record Exchange Rate");
+        println!();
 
-    for (i, (key, value)) in currencies.iter_mut().enumerate() {
-        println!("[{}] {} {}", i + 1, value.name, key);
+        for (i, (key, value)) in currencies.iter_mut().enumerate() {
+            println!("[{}] {} ({})", i + 1, value.name, key);
+        }
+
+        println!();
+        print!("Select Foreign Currency (input the ex: PHP): ");
+        io::stdout().flush().unwrap();
+
+        io::stdin().read_line(&mut currency_input).unwrap();
+        let currency_code = currency_input.trim().to_uppercase();
+
+        if currencies.contains_key(&currency_code) {
+            print!("Input Exchange Rate: ");
+            io::stdout().flush().unwrap();
+            io::stdin()
+                .read_line(&mut rate_input)
+                .expect("[ERROR] Failed to read input");
+
+            let rate_amount: f64 = rate_input
+                .trim()
+                .parse()
+                .expect("[ERROR] Invalid input: Please enter a valid floating-point number.");
+
+            if let Some(currency) = currencies.get_mut(&currency_code) {
+                currency.exchange_rate = rate_amount;
+                println!("New Exchange Rate: {}", currency.exchange_rate);
+            }
+            println!();
+        } else {
+            println!("[ERROR] {} is not a valid currency", currency_input);
+            println!();
+        }
+
+        if return_menu() {
+            println!();
+            break;
+        }
     }
-
-    println!();
 }
 
 /// Main entry point of the banking application.
