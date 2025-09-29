@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use indexmap::IndexMap;
 use std::io::{self, Write};
 
 struct CurrencyType {
@@ -147,10 +147,21 @@ fn withdraw_amount(account_name: String, currency_id: &str, account_balance: &mu
     }
 }
 
+fn record_exchange_rate(currencies: &mut IndexMap<String, CurrencyType>) {
+    println!("Record Exchange Rate");
+    println!();
+
+    for (i, (key, value)) in currencies.iter_mut().enumerate() {
+        println!("[{}] {} {}", i + 1, value.name, key);
+    }
+
+    println!();
+}
+
 /// Main entry point of the banking application.
 /// Initializes the account and manages the transaction loop.
 fn main() {
-    let mut currencies: HashMap<String, CurrencyType> = HashMap::from([
+    let mut currencies: IndexMap<String, CurrencyType> = IndexMap::from([
         (
             "PHP".to_string(),
             CurrencyType {
@@ -249,6 +260,9 @@ fn main() {
                     println!("[ERROR] You dont have an existing account!");
                     println!();
                 }
+            }
+            "5" => {
+                record_exchange_rate(&mut currencies);
             }
             "7" => break,
             _ => {
