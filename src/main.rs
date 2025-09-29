@@ -206,22 +206,58 @@ fn record_exchange_rate(currencies: &mut IndexMap<String, CurrencyType>) {
 /// * `currencies` - A mutable reference to the `IndexMap` of currencies.
 fn currency_exchange(currencies: &mut IndexMap<String, CurrencyType>) {
     loop {
+        let mut foreign_currency_input = String::new();
+        let mut exchange_currency_input = String::new();
+        let mut foreign_amount_input = String::new();
+
         println!("Foreign Currency Exchange");
         println!("Source Currency Option:");
 
-        for (i, (key, value)) in currencies.iter_mut().enumerate() {
+        for (i, (key, value)) in currencies.iter().enumerate() {
             println!("[{}] {} ({})", i + 1, value.name, key);
         }
 
-        println!();
+        print!("\nSelect Source Currency (input the ex: PHP): ");
+        io::stdout().flush().unwrap();
+        io::stdin().read_line(&mut foreign_currency_input).unwrap();
+        let foreign_currency_code = foreign_currency_input.trim().to_uppercase();
 
-        println!("Exchanged Currency Option:");
+        if let Some(source_currency) = currencies.get(&foreign_currency_code) {
+            print!("Input Source Amount: ");
+            io::stdout().flush().unwrap();
+            io::stdin().read_line(&mut foreign_amount_input).unwrap();
+            let foreign_rate_amount: f64 = foreign_amount_input
+                .trim()
+                .parse()
+                .expect("[ERROR] Invalid input: Please enter a valid number.");
 
-        for (i, (key, value)) in currencies.iter_mut().enumerate() {
-            println!("[{}] {} ({})", i + 1, value.name, key);
+            println!("\nExchanged Currency Option:");
+            for (i, (key, value)) in currencies.iter().enumerate() {
+                println!("[{}] {} ({})", i + 1, value.name, key);
+            }
+
+            print!("\nSelect Exchange Currency (input the ex: PHP): ");
+            io::stdout().flush().unwrap();
+            io::stdin().read_line(&mut exchange_currency_input).unwrap();
+            let exchange_currency_code = exchange_currency_input.trim().to_uppercase();
+
+            if let Some(target_currency) = currencies.get(&exchange_currency_code) {
+                let exchange_amount = foreign_rate_amount * source_currency.exchange_rate
+                    / target_currency.exchange_rate;
+                println!("Exchange Amount: {:.2}", exchange_amount);
+                println!();
+            } else {
+                println!(
+                    "[ERROR] {} is not a valid currency",
+                    exchange_currency_input
+                );
+                println!();
+            }
+        } else {
+            println!("[ERROR] {} is not a valid currency", foreign_currency_input);
+            println!();
         }
 
-        println!();
         if return_menu() {
             println!();
             break;
