@@ -1,3 +1,4 @@
+use core::num;
 use indexmap::IndexMap;
 use std::io::{self, Write};
 
@@ -265,6 +266,57 @@ fn currency_exchange(currencies: &mut IndexMap<String, CurrencyType>) {
     }
 }
 
+fn interest_amount(account: &BankAccount) {
+    loop {
+        const RATE: f64 = 0.05; //Constant 5% Interest Rate
+        let mut num_days_input = String::new();
+
+        println!("Show Interst Amount: ");
+        println!("Account Name: {}", account.name);
+        println!("Current Balance: {:.2} ", account.balance);
+        println!("Current: {} ", account.currency_id);
+        println!("Interest Rate: {}%", RATE * 100.0);
+
+        println!();
+        print!("Total Number of Days: ");
+        io::stdout().flush().unwrap();
+        io::stdin()
+            .read_line(&mut num_days_input)
+            .expect("Failed to read input");
+
+        let days: i32 = num_days_input
+            .trim()
+            .parse()
+            .expect("Please enter a valid integer");
+
+        println!();
+
+        println!("{:<3} | {:<8} | {:<8} |", "Day", "Interest", "Balance");
+
+        let mut balance: f64 = account.balance;
+        let mut interest_amount: f64;
+
+        for day in 1..=days {
+            interest_amount = balance * (RATE / 365.0);
+            balance += interest_amount;
+
+            let display_interest = (interest_amount * 100.0).round() / 100.0;
+            let display_balance = (balance * 100.0).round() / 100.0;
+
+            println!(
+                "{:<3} | {:<8.2} | {:<8.2} |",
+                day, display_interest, display_balance
+            );
+        }
+
+        println!();
+        if return_menu() {
+            println!();
+            break;
+        }
+    }
+}
+
 /// Main entry point of the banking application.
 /// Initializes currencies, the user account, and handles user transactions.
 fn main() {
@@ -373,6 +425,9 @@ fn main() {
             }
             "5" => {
                 record_exchange_rate(&mut currencies);
+            }
+            "6" => {
+                interest_amount(&account);
             }
             "7" => break,
             _ => {
