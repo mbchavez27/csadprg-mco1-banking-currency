@@ -201,10 +201,22 @@ fn record_exchange_rate(currencies: &mut IndexMap<String, CurrencyType>) {
     }
 }
 
-/// Placeholder function for currency exchange operation.
+/// Handles currency exchange between available currencies.
 ///
-/// # Arguments
-/// * `currencies` - A mutable reference to the `IndexMap` of currencies.
+/// Prompts the user to select a source and target currency from the provided list,
+/// then computes and displays the exchanged amount based on their exchange rates.
+/// Runs repeatedly until the user chooses to return to the main menu.
+///
+/// # Parameters
+/// * `currencies` - Mutable reference to an `IndexMap<String, CurrencyType>`
+///   containing currency codes, names, and their exchange rates.
+///
+/// # Output
+/// Displays a menu of available currencies, exchange results, or error messages
+/// for invalid currency codes or inputs.
+///
+/// # Panics
+/// If user input for amounts is invalid or I/O operations fail.
 fn currency_exchange(currencies: &mut IndexMap<String, CurrencyType>) {
     loop {
         let mut foreign_currency_input = String::new();
@@ -266,6 +278,20 @@ fn currency_exchange(currencies: &mut IndexMap<String, CurrencyType>) {
     }
 }
 
+/// Displays daily compounded interest for a given bank account.
+///
+/// Uses a fixed 5% annual rate and computes daily interest as:
+/// `interest = balance * (RATE / 365.0)`, updating the balance each day.
+/// The function runs in a loop until the user returns to the main menu.
+///
+/// # Parameters
+/// * `account` - Reference to a `BankAccount` containing `name`, `balance`, and `currency_id`.
+///
+/// # Output
+/// Prints a table of daily interest and balance updates.
+///
+/// # Panics
+/// If user input for days is invalid or I/O fails.
 fn interest_amount(account: &BankAccount) {
     loop {
         const RATE: f64 = 0.05; //Constant 5% Interest Rate
