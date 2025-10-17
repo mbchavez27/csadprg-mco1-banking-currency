@@ -19,7 +19,6 @@ fn main() {
         (
             "PHP".to_string(),
             CurrencyType {
-                id: "PHP".to_string(),
                 name: "Philippine Peso".to_string(),
                 exchange_rate: 1.0,
             },
@@ -27,7 +26,6 @@ fn main() {
         (
             "USD".to_string(),
             CurrencyType {
-                id: "USD".to_string(),
                 name: "United States Dollar".to_string(),
                 exchange_rate: 0.0,
             },
@@ -35,7 +33,6 @@ fn main() {
         (
             "JPY".to_string(),
             CurrencyType {
-                id: "JPY".to_string(),
                 name: "Japanese Yen".to_string(),
                 exchange_rate: 0.0,
             },
@@ -43,7 +40,6 @@ fn main() {
         (
             "GBP".to_string(),
             CurrencyType {
-                id: "GBP".to_string(),
                 name: "British Pound Sterling".to_string(),
                 exchange_rate: 0.0,
             },
@@ -51,7 +47,6 @@ fn main() {
         (
             "EUR".to_string(),
             CurrencyType {
-                id: "EUR".to_string(),
                 name: "Euro".to_string(),
                 exchange_rate: 0.0,
             },
@@ -59,7 +54,6 @@ fn main() {
         (
             "CNY".to_string(),
             CurrencyType {
-                id: "CNY".to_string(),
                 name: "Chinese Yuan Renminbi".to_string(),
                 exchange_rate: 0.0,
             },
