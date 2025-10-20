@@ -27,35 +27,35 @@ fn main() {
             "USD".to_string(),
             CurrencyType {
                 name: "United States Dollar".to_string(),
-                exchange_rate: 0.0,
+                exchange_rate: 58.00,
             },
         ),
         (
             "JPY".to_string(),
             CurrencyType {
                 name: "Japanese Yen".to_string(),
-                exchange_rate: 0.0,
+                exchange_rate: 0.40,
             },
         ),
         (
             "GBP".to_string(),
             CurrencyType {
                 name: "British Pound Sterling".to_string(),
-                exchange_rate: 0.0,
+                exchange_rate: 78.0,
             },
         ),
         (
             "EUR".to_string(),
             CurrencyType {
                 name: "Euro".to_string(),
-                exchange_rate: 0.0,
+                exchange_rate: 68.0,
             },
         ),
         (
             "CNY".to_string(),
             CurrencyType {
                 name: "Chinese Yuan Renminbi".to_string(),
-                exchange_rate: 0.0,
+                exchange_rate: 8.0,
             },
         ),
     ]);
