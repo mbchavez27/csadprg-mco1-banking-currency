@@ -106,9 +106,27 @@ fn main() {
                     println!("[ERROR] You don't have an existing account!\n");
                 }
             }
-            "4" => currency_exchange(&mut currencies),
-            "5" => record_exchange_rate(&mut currencies),
-            "6" => interest_amount(&account),
+            "4" => {
+                if !account.name.is_empty() {
+                    currency_exchange(&mut currencies)
+                } else {
+                    println!("[ERROR] You don't have an existing account!\n");
+                }
+            }
+            "5" => {
+                if !account.name.is_empty() {
+                    record_exchange_rate(&mut currencies)
+                } else {
+                    println!("[ERROR] You don't have an existing account!\n");
+                }
+            }
+            "6" => {
+                if !account.name.is_empty() {
+                    interest_amount(&account)
+                } else {
+                    println!("[ERROR] You don't have an existing account!\n");
+                }
+            }
             "7" => break,
             _ => println!("[ERROR] Invalid choice!\n"),
         }
