@@ -25,8 +25,8 @@ pub fn interest_amount(account: &BankAccount) {
 
         let mut balance: f64 = account.balance;
         for day in 1..=days {
-            let interest_amount = balance * (RATE / 365.0);
-            balance += interest_amount;
+            let interest_amount = ((balance * (RATE / 365.0)) * 100.0).ceil() / 100.0;
+            balance = ((balance + interest_amount) * 100.0).ceil() / 100.0;
 
             println!("{:<3} | {:<8.2} | {:<8.2} |", day, interest_amount, balance);
         }
